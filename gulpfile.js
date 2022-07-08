@@ -1,26 +1,30 @@
 "use strict";
+import gulp from "gulp";
+import dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+const sass = gulpSass(dartSass);
+import plumber from "gulp-plumber";
+import postcss from "gulp-postcss";
+import autoprefixer from "autoprefixer";
+import posthtml from "gulp-posthtml";
+import include from "posthtml-include";
+import minify from "gulp-csso";
+import rename from "gulp-rename";
+import svgstore from "gulp-svgstore";
+import imagemin from "gulp-imagemin";
+import webp from "gulp-webp";
+import del from "del";
+import run from "gulp4-run-sequence";
+import server from "browser-sync";
+import normalize from "node-normalize-scss";
 
-var gulp = require("gulp");
-var sass = require("gulp-sass");
-var plumber = require("gulp-plumber");
-var postcss = require("gulp-postcss");
-var autoprefixer = require("autoprefixer");
-var posthtml = require("gulp-posthtml");
-var include = require("posthtml-include");
-var minify = require("gulp-csso");
-var rename = require("gulp-rename");
-var svgstore = require("gulp-svgstore");
-var imagemin = require("gulp-imagemin");
-var webp = require("gulp-webp");
-var del = require("del");
-var run = require("run-sequence");
-var server = require("browser-sync").create();
+server.create();
 
 gulp.task("style", function() {
   return gulp.src("sass/style.scss")
     .pipe(plumber())
     .pipe(sass({
-      includePaths: require('node-normalize-scss').includePaths
+      includePaths: normalize.includePaths
     }))
     .pipe(postcss([
       autoprefixer()
@@ -51,15 +55,7 @@ gulp.task("html", function () {
 
 gulp.task("images", function () {
   return gulp.src("img/**/*.{png,jpg,svg}")
-    .pipe(imagemin([
-      imagemin.optipng({
-        optimizationLevel: 3
-      }),
-      imagemin.jpegtran({
-        progressive: true
-      }),
-      imagemin.svgo()
-    ]))
+    .pipe(imagemin())
     .pipe(gulp.dest("build/img"));
 });
 
@@ -99,9 +95,6 @@ gulp.task("serve", function() {
     cors: true,
     ui: false
   });
-  gulp.watch("sass/**/*.{scss,sass}", ["style"]);
-  gulp.watch("js/*.js", ["js"]);
-  gulp.watch("*.html", ["html"]);
 });
 
 gulp.task("build", function (done) {
