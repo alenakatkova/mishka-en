@@ -55,8 +55,5 @@
     "js/**/*.js",
     "img/**/*.svg",
     "sass/**/*.{sass,scss}"
-  ],
-  "engines": {
-    "node": "8.2"
-  }
+  ]
 }
