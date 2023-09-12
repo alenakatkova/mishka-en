@@ -1,6 +1,6 @@
 # MISHKA Online Shop
 
-This project was primarily created as a practice to implement responsive web design techniques. It features three pages:
+This project was primarily created as a practice to implement adaptive web design techniques. It features three pages:
 
 1. Index - Main page
 2. Catalog - Product listing page
